@@ -1,0 +1,38 @@
+
+ctmc
+
+const int N=2;
+const double mu= 1;
+const double gamma= 200;
+const double lambda= mu/N;
+module server
+	s : [1..4]; // station
+	
+	
+	[loop1a] (s=1) -> gamma	: (s'=2);
+	[loop1b] (s=1) -> gamma	: (s'=3);
+	[serve1] (s=2) -> mu	: (s'=3);
+	
+	[loop2a] (s=3) -> gamma	: (s'=1);
+	[loop2b] (s=3) -> gamma	: (s'=4);
+	[serve2] (s=4) -> mu	: (s'=1);
+endmodule
+module station1
+	s1 : [1..2];
+	[loop1a] (s1=1) -> 1 : (s1'=1);
+	[noname1]       (s1=1) -> lambda : (s1'=2);
+	[loop1b] (s1=2) -> 1 : (s1'=2);
+	[serve1] (s1=2) -> 1 : (s1'=1);
+[f] (s1=3) -> 1 : (s1'=3);
+
+endmodule
+module station2
+	s2 : [1..2];
+	[loop2a] (s2=1) -> 1 : (s2'=1);
+	[noname2]       (s2=1) -> lambda : (s2'=2);
+	[loop2b] (s2=2) -> 1 : (s2'=2);
+	[serve2] (s2=3) -> 1 : (s2'=1);
+endmodule
+system
+server|[loop1a,loop1b,serve1,loop2a,loop2b,serve2]|(station1|[f]|station2)
+endsystem

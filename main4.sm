@@ -1,0 +1,31 @@
+
+ctmc
+module c1
+
+	// local state
+	s : [1..4] init 1;
+
+	[a] s=1 ->  2 : (s' = 2);
+	[b] s=2 -> 3 : (s'=3);	
+	[d] s=2 -> 4 : (s'=4);
+	[d] s=3 -> 5 : (s'= 4);
+	[b] s=4 -> 6 : (s'= 3);
+	[d] s=4 -> 7 : (s' =1);
+endmodule
+
+module c2
+
+	// local state
+	t : [1..4] init 1;
+
+	[b] t=1-> 8 : (t'=3);
+	[a] t=2-> 9 : (t'=1);	
+	[b] t=2   -> 10 : (t'=4);
+	[b] t=3 -> 11 : (t'=2);
+	[a] t= 4 -> 12 : (t'=1);	
+
+endmodule
+
+system    
+c1 |[ b ]| c2
+endsystem
